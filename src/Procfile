@@ -1,0 +1,4 @@
+redis: redis-server
+web: /venv/bin/gunicorn main:app -b 0.0.0.0:80 --chdir=/app --log-level info --access-logfile=- --error-logfile=-
+worker: C_FORCE_ROOT=true /venv/bin/celery worker -A main.celery --loglevel=debug --workdir=/app -B
+

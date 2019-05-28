@@ -1,0 +1,53 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian
+
+ENV INITSYSTEM on
+
+ENV READTHEDOCS True
+
+
+RUN apt-get update && apt-get install -yq --no-install-recommends \
+		python3 \
+		python3-dev \
+		python3-dbus \
+		build-essential \
+		libssl-dev \
+		libffi-dev\
+		curl \
+		redis-server \
+		nano \
+		git \
+		python3-pip \
+		fswebcam \
+		cron \
+		dnsmasq \
+		wireless-tools \
+	&& apt-get clean \
+    	&& rm -rf /var/lib/apt/lists/*
+	# && rm -rf /var/lib/apt/lists/* \
+	# cd /tmp/ && git clone https://github.com/adafruit/Adafruit_Python_DHT.git && \
+    	# cd Adafruit_Python_DHT && python3 setup.py install && \
+	# apt-get install git-core build-essential python3-dev python3-pip && \
+	# apt-get -y autoremove && apt-get clean && rm -rf /tmp/*
+
+# create venv
+#===================================
+RUN python3 -m venv --without-pip venv \
+  && curl --insecure https://bootstrap.pypa.io/get-pip.py | /venv/bin/python
+
+# copy our python source into container
+#======================================
+COPY src/ /app
+
+# install dependencies
+#===================
+RUN /venv/bin/pip install -r /app/requirements.txt 
+
+
+WORKDIR /app
+
+
+#run the app when the container starts
+#======================================s
+CMD ["/venv/bin/honcho", "-f", "/app/Procfile", "start"]
+
+EXPOSE 80
