@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 from camera_pi import save_image
 from celery import Celery
 from picamera import PiCamera
-from influxdb import InfluxDBClient
+
 
 import requests
 
