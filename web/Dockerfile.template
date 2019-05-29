@@ -1,5 +1,5 @@
-#FROM balenalib/%%BALENA_MACHINE_NAME%%-debian
-FROM balenalib/rpi-debian
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian
+#FROM balenalib/rpi-debian
 
 ENV INITSYSTEM on
 
